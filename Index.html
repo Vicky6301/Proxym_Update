@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <title>Proxym</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f8f9fa;
+            text-align: center;
+            padding: 0 15px;
+        }
+
+        .overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.8), rgba(146, 144, 144, 0));
+            color: white;
+            text-align: center;
+            padding: 15px;
+            font-size: 16px;
+            font-weight: bold;
+        }
+  
+
+        .logo {
+    position: absolute;
+    top: 15px;
+    left: 20px;
+    width: 60px;
+    height: 60px;
+    z-index: 10;
+    border-radius: 50%;
+    object-fit: cover; 
+}
+/* 
+.profile-header {
+    position: relative;
+    background-image: url('https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0?w=1200');
+    background-size: cover;
+    background-position: center;
+    height: 350px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 30px 20px;
+    border-radius: 15px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+} */
+.profile-header {
+    position: relative;
+    width: 100%;
+    height: 350px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.banner-video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 1;
+}
+
+.profile-header::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+    z-index: 1;
+}
+
+.profile-header img {
+    position: relative;
+    z-index: 2;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid white;
+    margin-bottom: 15px;
+}
+
+.input-container {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    width: 100%;
+    max-width: 450px;
+    margin: 20px auto;
+    position: relative;
+    z-index: 2;
+}
+
+.input-container input {
+    padding: 12px 18px;
+    font-size: 16px;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    color: white;
+    outline: none;
+    transition: all 0.3s ease;
+    width: 48%;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.input-container input::placeholder {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.input-container input:focus {
+    border-color: rgba(255, 255, 255, 0.6);
+    box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.3);
+}
+
+        .image-container {
+            position: relative;
+            overflow: hidden;
+            border-radius: 5px;
+        }
+
+        .image-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            border-radius: 5px;
+            opacity: 0.8;
+        }
+
+        .image-container:hover img {
+            transform: scale(1.05);
+        }
+
+        .image-container:hover .overlay {
+            background: rgba(0, 0, 0, 0.7);
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            vertical-align: middle;
+            display: inline-block;
+            border-radius: 5px;
+        }
+
+        .grid-wrapper {
+            background-color: white;
+            padding: 20px;
+            display: grid;
+            grid-gap: 10px;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            grid-auto-rows: 200px;
+            grid-auto-flow: dense;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .grid-wrapper>div {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .grid-wrapper>div>img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            border-radius: 5px;
+        }
+
+        .grid-wrapper>div>img:hover {
+            transform: scale(1.05);
+        }
+
+        .grid-wrapper .wide {
+            grid-column: span 2;
+        }
+
+        .grid-wrapper .tall {
+            grid-row: span 2;
+        }
+
+        .grid-wrapper .big {
+            grid-column: span 2;
+            grid-row: span 2;
+        }
+
+        .lightbox {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .lightbox img {
+            max-width: 90%;
+            max-height: 90%;
+            border-radius: 10px;
+        }
+
+        .image-container video {
+        width: 100%;
+        height: auto;
+        display: block;
+    }
+
+    .lightbox video {
+        max-width: 90%;
+        max-height: 80vh;
+        display: none;
+    }
+    
+
+        .lightbox .prev,
+        .lightbox .next {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 30px;
+            color: white;
+            cursor: pointer;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .lightbox .prev {
+            left: 10px;
+        }
+
+        .lightbox .next {
+            right: 10px;
+        }
+
+        .lightbox .close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 30px;
+            color: white;
+            cursor: pointer;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+/* Bottom navigation bar styles */
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: #f7f8fa;
+    display: flex;
+    justify-content: space-evenly; /* Align icons evenly across the navbar */
+    padding: 10px 0;
+    z-index: 100;
+    border-radius: 15px 15px 0 0; /* Rounded top corners */
+    box-shadow: 0px -4px 10px rgba(0, 0, 0, 0.1); /* Optional shadow for better visibility */
+}
+
+/* Icon styling */
+.nav-icon {
+    color: rgb(12, 12, 12);
+    font-size: 24px;
+    text-align: center;
+    transition: color 0.3s ease;
+    cursor: pointer;
+}
+
+.nav-icon:hover {
+    color: #110555; /* Change color on hover */
+}
+
+/* Active icon styling */
+.nav-icon.active {
+    color: #110555;
+}
+
+.image-container.video {
+    position: relative;
+    overflow: hidden;
+    border-radius: 5px;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.image-container.video video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 5px;
+}
+
+
+/* Media query for mobile devices */
+@media (max-width: 600px) {
+    .bottom-nav {
+        flex-direction: row; /* Ensures it's a row on smaller screens */
+    }
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+    .input-container {
+        flex-direction: column;
+        gap: 5px;
+        width: 80%; /* Reduce width */
+        max-width: 250px; /* Set a max width for smaller screens */
+        text-align: center;
+    }
+
+    .input-container input {
+        width: 100%;
+        padding: 8px 12px; /* Reduce padding for a smaller look */
+        font-size: 14px; /* Decrease font size */
+    }
+}
+
+@media (max-width: 480px) {
+.bottom-nav {
+        padding: 5px 0;
+    }
+}
+    </style>
+</head>
+
+<body>
+
+    <div class="profile-header">
+        <img src="https://images.unsplash.com/photo-1496747611176-843222e1e57c?w=500&auto=format&fit=crop&q=60" alt="Profile Picture">
+        <video autoplay loop muted playsinline class="banner-video">
+            <source src="images/banner_video.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    
+        <div class="input-container">
+            <input type="date" id="event-date" name="event-date" placeholder="Event Date">
+            <input type="text" id="event-name" name="event-name" placeholder="Event Name">
+        </div>
+    </div>
+
+    <img src="images/logo_white.png" alt="Logo" class="logo">
+        
+    <div class="grid-wrapper">
+        <div class="image-container">
+            <img src="https://images.unsplash.com/photo-1496747611176-843222e1e57c?w=500&auto=format&fit=crop&q=60"
+                alt="Paris">
+            <div class="overlay">Paris, France</div>
+        </div>
+        <div class="image-container">
+            <img src="https://images.unsplash.com/photo-1529139574466-a303027c1d8b?w=500&auto=format&fit=crop&q=60"
+                alt="New York">
+            <div class="overlay">New York, USA</div>
+        </div>
+        <div class="image-container tall">
+            <img src="https://images.unsplash.com/photo-1616091093714-c64882e9ab55?w=500&auto=format&fit=crop&q=60"
+                alt="Tokyo">
+            <div class="overlay">Tokyo, Japan</div>
+        </div>
+        <div class="image-container wide">
+            <img src="https://plus.unsplash.com/premium_photo-1708276231926-996b3cf6c846?w=500&auto=format&fit=crop&q=60"
+                alt="London">
+            <div class="overlay">London, UK</div>
+        </div>
+        <div class="image-container video">
+            <video autoplay loop muted playsinline>
+                <source src="images/proxym.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+            <div class="overlay">London, UK</div>
+        </div>
+        <div class="image-container big video">
+            <video autoplay loop muted playsinline>
+                <source src="images/proxym_1.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+            <div class="overlay">London, UK</div>
+        </div>
+        <div class="image-container">
+            <img src="https://plus.unsplash.com/premium_photo-1673758910678-e335643d0817?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8amV3ZWxsZXJ5JTIwbW9kZWx8ZW58MHx8MHx8fDA%3D"
+                alt="New York">
+            <div class="overlay">New York, USA</div>
+        </div>
+        <div class="image-container">
+            <img src="https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8amV3ZWxsZXJ5JTIwbW9kZWx8ZW58MHx8MHx8fDA%3D"
+                alt="New York">
+            <div class="overlay">New York, USA</div>
+        </div>
+        <div class="image-container big">
+            <img src="https://images.unsplash.com/photo-1488161628813-04466f872be2?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8c2hvZSUyMG1vZGVsfGVufDB8fDB8fHww"
+                alt="London">
+            <div class="overlay">London, UK</div>
+        </div>
+        <div class="image-container">
+            <img src="https://images.unsplash.com/photo-1625158244150-5cf613b736c8?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MjB8fGRyZXNzJTIwbW9kZWx8ZW58MHx8MHx8fDA%3D"
+                alt="Paris">
+            <div class="overlay">Paris, France</div>
+        </div>
+        <div class="image-container tall">
+            <img src="https://images.unsplash.com/photo-1598554889165-8139a49f2883?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTV8fGRyZXNzJTIwbW9kZWx8ZW58MHx8MHx8fDA%3D"
+                alt="Tokyo">
+            <div class="overlay">Tokyo, Japan</div>
+        </div>
+    </div>
+
+    <div class="lightbox">
+        <span class="close">&times;</span>
+        <span class="prev">&#10094;</span>
+        <div class="lightbox-content">
+            <img src="" alt="Popup Image">
+            <video autoplay loop muted playsinline>
+                <source src="" type="video/mp4">
+            </video>
+        </div>
+        <span class="next">&#10095;</span>
+    </div>
+    
+    <div class="bottom-nav">
+        <i class="fa-solid fa-house nav-icon"></i>
+        <i class="fa-solid fa-magnifying-glass nav-icon"></i>
+        <i class="fa-solid fa-calendar-plus nav-icon active"></i>
+        <i class="fa-regular fa-comment nav-icon"></i>
+        <i class="fa-regular fa-user nav-icon"></i>
+    </div>
+    <script>
+        const items = document.querySelectorAll('.grid-wrapper img, .grid-wrapper video');
+        const lightbox = document.querySelector('.lightbox');
+        const lightboxImg = document.querySelector('.lightbox img');
+        const lightboxVideo = document.querySelector('.lightbox video');
+        const videoSource = lightboxVideo.querySelector('source');
+        const closeBtn = document.querySelector('.lightbox .close');
+        const prevBtn = document.querySelector('.lightbox .prev');
+        const nextBtn = document.querySelector('.lightbox .next');
+        let currentIndex = 0;
+    
+        function showLightbox(index) {
+            if (index < 0) index = items.length - 1;
+            if (index >= items.length) index = 0;
+            currentIndex = index;
+            
+            const item = items[currentIndex];
+    
+            if (item.tagName === "IMG") {
+                lightboxImg.src = item.src;
+                lightboxImg.style.display = "block";
+                lightboxVideo.style.display = "none";
+            } else if (item.tagName === "VIDEO") {
+                videoSource.src = item.querySelector('source').src;
+                lightboxVideo.load(); // Reload video source
+                lightboxVideo.style.display = "block";
+                lightboxImg.style.display = "none";
+            }
+    
+            lightbox.style.display = 'flex';
+        }
+    
+        items.forEach((item, index) => {
+            item.addEventListener('click', () => showLightbox(index));
+        });
+    
+        closeBtn.addEventListener('click', () => {
+            lightbox.style.display = 'none';
+            lightboxVideo.pause(); // Pause video when closing
+        });
+    
+        prevBtn.addEventListener('click', () => showLightbox(currentIndex - 1));
+        nextBtn.addEventListener('click', () => showLightbox(currentIndex + 1));
+    
+        document.addEventListener('keydown', (e) => {
+            if (e.key === "Escape") {
+                lightbox.style.display = 'none';
+                lightboxVideo.pause();
+            } else if (e.key === "ArrowLeft") showLightbox(currentIndex - 1);
+            else if (e.key === "ArrowRight") showLightbox(currentIndex + 1);
+        });
+    </script>
+    
+</body>
+
+</html>
